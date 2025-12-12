@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hdgAtHome - Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/dashboard/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M8 12h8M12 8v8" />
+            </svg>
+            hdgAtHome
+        </div>
+        <div class="status-badge">
+            <span class="status-dot"></span>
+            <span id="status-text">Connecting...</span>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <!-- Sidebar: Control Panel -->
+        <aside class="control-panel">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Training Controls</h2>
+                </div>
+                <div class="form-group">
+                    <label for="model-id">Model</label>
+                    <input type="text" id="model-id" value="H:/gen_ai/llm/gpt2" placeholder="Model path or HF ID">
+                </div>
+                <div class="form-group">
+                    <label for="learning-rate">Learning Rate</label>
+                    <input type="number" id="learning-rate" value="0.0001" step="0.00001">
+                </div>
+                <div class="form-group">
+                    <label for="batch-size">Batch Size</label>
+                    <input type="number" id="batch-size" value="1" min="1">
+                </div>
+                <div class="form-group">
+                    <label for="optimizer">Optimizer</label>
+                    <select id="optimizer">
+                        <option value="adamw" selected>AdamW</option>
+                        <option value="sgd">SGD</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button class="btn btn-primary" id="btn-start">▶ Start</button>
+                    <button class="btn btn-danger" id="btn-stop">■ Stop</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Network Topology</h2>
+                </div>
+                <div id="network-map">
+                    <span>Loading...</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <section class="main-content">
+            <!-- Metrics Row -->
+            <div class="metrics-row">
+                <div class="metric-card">
+                    <div class="metric-value" id="metric-peers">0</div>
+                    <div class="metric-label">Active Peers</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="metric-step">0</div>
+                    <div class="metric-label">Training Step</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="metric-loss">—</div>
+                    <div class="metric-label">Latest Loss</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="metric-throughput">—</div>
+                    <div class="metric-label">Steps/sec</div>
+                </div>
+            </div>
+
+            <!-- Loss Chart -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Loss Over Time</h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="loss-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Peer Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Connected Peers</h2>
+                </div>
+                <table class="peer-table">
+                    <thead>
+                        <tr>
+                            <th>Peer ID</th>
+                            <th>Layers</th>
+                            <th>Status</th>
+                            <th>VRAM</th>
+                        </tr>
+                    </thead>
+                    <tbody id="peer-table-body">
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: var(--text-secondary);">
+                                No peers connected
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="/dashboard/app.js"></script>
+</body>
+
+</html>
